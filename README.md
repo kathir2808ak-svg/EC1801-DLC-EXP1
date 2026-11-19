@@ -21,10 +21,52 @@ exp1_boolean_min.vcd	VCD waveform dump generated during simulation
 
 ## Verilog Program
 
+module fun (
+input wire A, 
+input wire B, 
+output wire F 
+); 
+assign F = (~A) | B ;    // F = A' + B 
+endmodule
 
 
 ## TestBench Program
+module Fulladder_TB;
 
+    reg A, B, Cin;
+    wire Sum, Cout;
+
+    fulladder DUT (
+        .A(A),
+        .B(B),
+        .Cin(Cin),
+        .Sum(Sum),
+        .Cout(Cout)
+    );
+
+    initial begin
+        $display("A=%b B=%b Cin=%b | Sum=%b Cout=%b",
+                  A, B, Cin, Sum, Cout);
+
+        A=0; B=0; Cin=0; #10;
+        A=0; B=0; Cin=1; #10;
+        A=0; B=1; Cin=0; #10;
+        A=0; B=1; Cin=1; #10;
+        A=1; B=0; Cin=0; #10;
+        A=1; B=0; Cin=1; #10;
+        A=1; B=1; Cin=0; #10;
+        A=1; B=1; Cin=1; #10;
+
+        $finish;
+    end
+
+initial
+begin
+$dumpfile("Fulladder_TB.vcd");
+$dumpvars(0, Fulladder_TB);
+end
+
+endmodule
 
 
 
@@ -84,6 +126,7 @@ was minimized to F=B'D'+BD.
 and successfully implemented using Verilog HDL.
 
 ## OUTPUT
+<img width="1920" height="1080" alt="Screenshot 2026-11-16 105830" src="https://github.com/user-attachments/assets/c3eda761-97ab-4370-95af-498b360dbf19" />
 
 
 
